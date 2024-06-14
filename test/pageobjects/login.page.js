@@ -1,33 +1,39 @@
 import { $ } from '@wdio/globals'
 import Page from './page.js';
 
-
+/**
+ * sub page containing specific selectors and methods for a specific page
+ */
 class LoginPage extends Page {
-    //Getter element
-    get email() {return $('input[name="username"]')}
-    get password() {return $('input[name="password"]')}
-    get submitBtn() {return $('button=Login')}
-    get seePass() {return $('svg.lucide-eye')}
-    get homeBtn() {return $('button=Back to Home')}
-
-    async inputData(username, password) {
-        await this.email.setValue(username);
-        await this.password.setValue(password);
+    /**
+     * define selectors using getter methods
+     */
+    get inputUsername () {
+        return $('input[type="email"]');
     }
 
-    async checkPass(){
-        await this.seePass.click()
+    get inputPassword () {
+        return $('input[type="password"]');
     }
 
-    async backtoHome(){
-        await this.homeBtn.click()
+    get btnSubmit () {
+        return $('.btn-primary');
     }
 
-    async clickBtnLogin(){
-        await this.submitBtn.click()
+    /**
+     * a method to encapsule automation code to interact with the page
+     * e.g. to login using username and password
+     */
+    async login (username, password) {
+        await this.inputUsername.setValue(username);
+        await this.inputPassword.setValue(password);
+        await this.btnSubmit.click();
     }
-    
-    async open() {
+
+    /**
+     * overwrite specific options to adapt it to page object
+     */
+    open () {
         return super.open('login');
     }
 }
